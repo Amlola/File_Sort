@@ -29,7 +29,7 @@ void Sort(void* text1, size_t text_len, int (*CompFunc)(const void* s1, const vo
     }
 
 
-/*void qSort(void* text1, size_t left, size_t right, int (*CompFunc)(const void* s1, const void* s2))
+void qSort(void* text1, size_t left, size_t right, int (*CompFunc)(const void* s1, const void* s2))
     {
     char** text = (char**) text1;
 
@@ -45,7 +45,7 @@ void Sort(void* text1, size_t text_len, int (*CompFunc)(const void* s1, const vo
         last = right;
         while (first <= last)
             {
-            while (CompFunc(text[first], text[pivot]) <= 0)
+            while (first <= last && CompFunc(text[first], text[pivot]) < 0)
                 {
                 first++;
                 }
@@ -57,14 +57,16 @@ void Sort(void* text1, size_t text_len, int (*CompFunc)(const void* s1, const vo
                 {
                 break;
                 }
-            Swap(text, first++, last--);
+            Swap(text, first, last);
+            ++first;
+            --last;
             }
 
         qSort(text, left, last, CompFunc);
         qSort(text, last + 1, right, CompFunc);
         }
     }
-*/
+
 
 int Strcmp(const void* s1, const void* s2)
     {
@@ -75,9 +77,8 @@ int Strcmp(const void* s1, const void* s2)
 
     char garbage[] = {' ', ',', '`', '!', '?', '-', '^', ';', ':', '>', '.', '(', ')', '{', '}', '[', ']', '"', '\'', '\0'};
 
-    int i = 0;
-    int j = 0;
-
+    size_t i = 0;
+    size_t j = 0;
     while (true)
         {
         if (strchr(garbage, str1[i]) != NULL)
@@ -116,8 +117,8 @@ int Strcmp_Reverse(const void* s1, const void* s2)
 
     char garbage[] = {' ', ',', '`', '!', '?', '-', '^', ';', ':', '>', '.', '(', ')', '{', '}', '[', ']', '"', '\'', '\0'};
 
-    int i = strlen(str1) - 1;
-    int j = strlen(str2) - 1;
+    size_t i = strlen(str1) - 1;
+    size_t j = strlen(str2) - 1;
     while (i > 0 && j > 0)
         {
         if (strchr(garbage, str1[i]) != NULL)
@@ -142,15 +143,14 @@ int Strcmp_Reverse(const void* s1, const void* s2)
     return (toupper(str1[i]) - toupper(str2[j]));
     }
 
-/*
+
 void Swap(char** text, size_t i, size_t j)
     {
-    char* tmp;
-    tmp = text[i];
+    char* tmp = text[i];
     text[i] = text[j];
     text[j] = tmp;
     }
-*/
+
 
 void Output1(FILE* file1, char* Buf, size_t BufSize)
     {
