@@ -39,11 +39,11 @@ int main()
 
     Parsing_pointers(Buf, BufSize, text);
 
-    Sort(text, count_n, Strcmp);
+    qSort(text, 0, count_n - 1, Strcmp);
 
     Output(file1, text, count_n);
 
-    Sort(text, count_n, Strcmp_Reverse);
+    qSort(text, 0, count_n - 1, Strcmp_Reverse);
 
     Output(file1, text, count_n);
 

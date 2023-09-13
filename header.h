@@ -83,7 +83,7 @@ void Output(FILE* file1, char** text, int count_n);
 void Output1(FILE* file1, char* Buf, size_t BufSize);
 
 
-//void Swap(char** text, size_t i, size_t j);
+void Swap(char** text, size_t i, size_t j);
 
 
 void Sort(void* text1, size_t text_len, int (*CompFunc)(const void* s1, const void* s2));
