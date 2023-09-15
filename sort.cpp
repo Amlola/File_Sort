@@ -74,6 +74,7 @@ int find_valid(const String* str, int start, int delta) {
              return i;
         }
     }
+    return -1;
 }
 
 
@@ -92,7 +93,13 @@ int Strcmp(const void* s1, const void* s2)
         {
         int pos_i = find_valid(str1, i, 1);
         int pos_j = find_valid(str2, j, 1);
-
+        if (pos_i == -1 && pos_j == -1) {
+            return 0;
+        } else if (pos_i == -1) {
+            return 1;
+        } else if (pos_j == -1) {
+            return -1;
+        }
         int delta = (toupper(*(str1->adress + pos_i)) - toupper(*(str2->adress + pos_j)));
         if (delta != 0) {
              return delta;
@@ -122,6 +129,13 @@ int Strcmp_Reverse(const void* s1, const void* s2)
         {
         int pos_i = find_valid(str1, i, -1);
         int pos_j = find_valid(str2, j, -1);
+        if (pos_i == -1 && pos_j == -1) {
+            return 0;
+        } else if (pos_i == -1) {
+            return 1;
+        } else if (pos_j == -1) {
+            return -1;
+        }
 
         int delta = (toupper(*(str1->adress + pos_i)) - toupper(*(str2->adress + pos_j)));
         if (delta != 0) {
