@@ -100,7 +100,7 @@ int Number_lines(char* Buf, size_t BufSize)
             }
         }
 
-    return count_n;
+    return count_n + 1;
     }
 
 
