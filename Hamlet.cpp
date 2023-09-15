@@ -10,6 +10,7 @@
 */
 
 
+
 #include "header.h"
 
 
@@ -19,11 +20,12 @@
  */
 int main()
     {
-    FILE* file;
-    file = fopen("Hamlet.txt", "rb");
 
-    FILE* file1;
-    file1  = fopen("output.txt", "w");
+    FILE* file1 = fopen("output.txt", "w");
+
+    FILE* file = fopen("test.txt", "rb");
+
+
 
     const long BufSize = GetFileSize(file);
     char* Buf = (char*) calloc(BufSize + 1, sizeof(char));
@@ -33,23 +35,26 @@ int main()
     fclose(file);
 
     int count_n = Number_lines(Buf, BufSize);
-    char** text = (char**) calloc(count_n, sizeof(char*));
+    String* text = (String*) calloc(count_n, sizeof(String));
 
     replace_slash_n(Buf, BufSize);
 
     Parsing_pointers(Buf, BufSize, text);
 
-    qSort(text, 0, count_n - 1, Strcmp);
+    Sort(text, count_n, Strcmp);
 
     Output(file1, text, count_n);
 
-    qSort(text, 0, count_n - 1, Strcmp_Reverse);
+    Sort(text, count_n, Strcmp_Reverse);
 
     Output(file1, text, count_n);
 
     Output1(file1, Buf, BufSize);
 
     fclose(file1);
+
+    free(Buf);
+    free(text);
 
     return 0;
     }
@@ -59,7 +64,7 @@ int main()
 long GetFileSize(FILE* file)
     {
     assert(file);
-
+    //ftell
     fseek(file, 0, SEEK_END);
     long bufsize = ftell(file);
     fseek(file, 0, SEEK_SET);
@@ -72,7 +77,7 @@ void replace_slash_n(char* Buf, size_t BufSize)
     {
     assert(Buf);
 
-    for (size_t i = 0;  i < BufSize; i++)
+    for (size_t i = 0; i < BufSize; i++)
         {
         if (*(Buf + i) == '\n')
             {
@@ -87,18 +92,19 @@ int Number_lines(char* Buf, size_t BufSize)
     assert(Buf);
 
     int count_n = 0;
-    for (size_t i = 0; i <= BufSize; i++)
+    for (size_t i = 0; i < BufSize; i++)
         {
         if (*(Buf + i) == '\n')
             {
             count_n++;
             }
         }
+
     return count_n;
     }
 
 
-void Parsing_pointers(char* Buf, int bufSize, char** text)
+void Parsing_pointers(char* Buf, int bufSize, String* text)
     {
     assert(Buf);
     assert(text);
@@ -106,27 +112,31 @@ void Parsing_pointers(char* Buf, int bufSize, char** text)
     int i = 0;
     while (i < bufSize)
         {
-        *text++ = Buf + i;
+        text->adress = Buf + i;
+        text->length = strlen(text->adress);
+        ++text;
+
         while (*(Buf + i) != '\0')
             {
             i++;
             }
+
         i++;
         }
 
     }
 
 
-void Output(FILE* file1, char** text, int count_n)
+void Output(FILE* file1, String* text, int count_n)
     {
     assert(text);
     assert(file1);
 
-    for (int i = 0; i < count_n - 1; i++)
+    for (int i = 0; i < count_n; i++)
         {
-        if (text[i][0] != '\r')
+        if ((*((text + i)->adress)) != '\r')
             {
-            fprintf(file1, "%s\n", *(text + i));
+            fprintf(file1, "%s\n", *((text + i)->adress));
             }
         }
     fprintf(file1, "\n");
@@ -137,18 +147,22 @@ void Output(FILE* file1, char** text, int count_n)
     fprintf(file1, "\n");
     }
 
+void OutputToCmd(String* text, int count_n)
+    {
+    assert(text);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    for (int i = 0; i < count_n; i++)
+        {
+        if ((*((text + i)->adress)) != '\r')
+            {
+            printf("%s\n", *((text + i)->adress));
+            }
+        }
+    printf("\n");
+    printf("\n");
+    printf("---------------------------------------------------------------------------------------------------------\n");
+    printf("\n");
+    printf("\n");
+    printf("\n");
+    }
+//void File_input(FILE* file,

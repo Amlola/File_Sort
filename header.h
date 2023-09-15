@@ -1,7 +1,6 @@
 /*!
 \file
 \brief Program header file.
-
 */
 
 
@@ -10,6 +9,11 @@
 #include <string.h>
 #include <assert.h>
 #include <ctype.h>
+
+struct String {
+    size_t length;
+    char* adress;
+};
 
 
 
@@ -31,7 +35,7 @@ void replace_slash_n(char* Buf, size_t BufSize);
  * Function fills an array of pointers.
  * \param[in] Number_lines - number of lines.
  */
-void Parsing_pointers(char* Buf, int Number_lines, char** text);
+void Parsing_pointers(char* Buf, int Number_lines, String* text);
 
 
 /*!
@@ -46,7 +50,7 @@ int Number_lines(char* Buf, size_t BufSize);
  * The function, depending on the passed CompFunc function, sorts the strings either from the beginning or from the end.
  * \param[in] text_len - number of lines.
  */
-void qSort(void* text1, size_t left, size_t right, int (*CompFunc)(const void* s1, const void* s2));
+void Sort(void* text1, size_t text_len, int (*CompFunc)(const void* s1, const void* s2));
 
 
 /*!
@@ -73,7 +77,7 @@ int Strcmp_Reverse(const void* s1, const void* s2);
  * Function outputs sorted rows.
  * \param[in] count_n - number of lines in text.
  */
-void Output(FILE* file1, char** text, int count_n);
+void Output(FILE* file1, String* text, int count_n);
 
 
 /*!
@@ -83,16 +87,15 @@ void Output(FILE* file1, char** text, int count_n);
 void Output1(FILE* file1, char* Buf, size_t BufSize);
 
 
-void Swap(char** text, size_t i, size_t j);
+void SwapStrings(String* a, String* b);
 
 
-void Sort(void* text1, size_t text_len, int (*CompFunc)(const void* s1, const void* s2));
+void qSort(void* text1, size_t left, size_t right, int (*CompFunc)(const void* s1, const void* s2));
 
 
+bool is_valid(char symbol);
 
-
-
-
-
+int find_valid(const String* str, int start, int delta);
+void OutputToCmd(String* text, int count_n);
 
 
