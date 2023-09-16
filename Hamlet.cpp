@@ -21,56 +21,47 @@
 int main()
     {
 
+    Text data {};
+
+    FILE* file = fopen("hamlet1.txt", "rb");
+
+    File_input(file, &data);
+
     FILE* file1 = fopen("output.txt", "w");
 
-    FILE* file = fopen("test.txt", "rb");
+    //qSort(text, 0, count_n - 1, Strcmp);
+    //bubble_Sort(text, count_n, Strcmp);
 
+    qsort(data.str, data.count_n, sizeof(String), Strcmp);
 
+    Output(file1, data.str, data.count_n);
 
-    const long BufSize = GetFileSize(file);
-    char* Buf = (char*) calloc(BufSize + 1, sizeof(char));
+    qSort(data.str, 0, data.count_n - 1, Strcmp_Reverse);
 
-    fread(Buf, sizeof(char), BufSize, file);
+    Output(file1, data.str, data.count_n);
 
-    fclose(file);
-
-    int count_n = Number_lines(Buf, BufSize);
-    String* text = (String*) calloc(count_n, sizeof(String));
-
-    replace_slash_n(Buf, BufSize);
-
-    Parsing_pointers(Buf, BufSize, text);
-
-    Sort(text, count_n, Strcmp);
-
-    Output(file1, text, count_n);
-
-    Sort(text, count_n, Strcmp_Reverse);
-
-    Output(file1, text, count_n);
-
-    Output1(file1, Buf, BufSize);
+    OutputSourceFile(file1, data.Buf, data.BufSize);
 
     fclose(file1);
 
-    free(Buf);
-    free(text);
+    Free(&data);
 
     return 0;
     }
 
 
-
-long GetFileSize(FILE* file)
+long long GetFileSize(FILE* file)
     {
     assert(file);
-    //ftell
-    fseek(file, 0, SEEK_END);
-    long bufsize = ftell(file);
+
+    long long start = ftell(file);
+    fseek(file, start, SEEK_END);
+
+    long long bufsize = ftell(file);
     fseek(file, 0, SEEK_SET);
+
     return bufsize;
     }
-
 
 
 void replace_slash_n(char* Buf, size_t BufSize)
@@ -123,7 +114,6 @@ void Parsing_pointers(char* Buf, int bufSize, String* text)
 
         i++;
         }
-
     }
 
 
@@ -136,7 +126,7 @@ void Output(FILE* file1, String* text, int count_n)
         {
         if ((*((text + i)->adress)) != '\r')
             {
-            fprintf(file1, "%s\n", *((text + i)->adress));
+            fprintf(file1, "%s\n", ((text + i)->adress));
             }
         }
     fprintf(file1, "\n");
@@ -147,6 +137,7 @@ void Output(FILE* file1, String* text, int count_n)
     fprintf(file1, "\n");
     }
 
+
 void OutputToCmd(String* text, int count_n)
     {
     assert(text);
@@ -155,7 +146,7 @@ void OutputToCmd(String* text, int count_n)
         {
         if ((*((text + i)->adress)) != '\r')
             {
-            printf("%s\n", *((text + i)->adress));
+            printf("%s\n", ((text + i)->adress));
             }
         }
     printf("\n");
@@ -165,4 +156,28 @@ void OutputToCmd(String* text, int count_n)
     printf("\n");
     printf("\n");
     }
-//void File_input(FILE* file,
+
+
+void File_input(FILE* file, Text* data)
+    {
+    data->BufSize = GetFileSize(file);
+    data->Buf = (char*) calloc(data->BufSize + 1, sizeof(char));
+
+    fread(data->Buf, sizeof(char), data->BufSize, file);
+
+    fclose(file);
+
+    data->count_n = Number_lines(data->Buf, data->BufSize);
+    data->str = (String*) calloc(data->count_n, sizeof(String));
+
+    replace_slash_n(data->Buf, data->BufSize);
+
+    Parsing_pointers(data->Buf, data->BufSize, data->str);
+    }
+
+
+void Free(Text* data)
+    {
+    free(data->Buf);
+    free(data->str);
+    }

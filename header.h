@@ -10,10 +10,23 @@
 #include <assert.h>
 #include <ctype.h>
 
-struct String {
-    size_t length;
-    char* adress;
-};
+
+struct String
+    {
+    size_t length = 0;
+    char* adress = nullptr;
+    };
+
+
+struct Text
+    {
+    char* Buf = nullptr;
+    long long BufSize = 0;
+    int count_n = 0;
+    String* str = nullptr;
+    };
+
+
 
 
 
@@ -21,7 +34,7 @@ struct String {
 /*!
  * The function returns the size of the input file.
  */
-long GetFileSize(FILE* file);
+long long GetFileSize(FILE* file);
 
 
 /*!
@@ -50,7 +63,7 @@ int Number_lines(char* Buf, size_t BufSize);
  * The function, depending on the passed CompFunc function, sorts the strings either from the beginning or from the end.
  * \param[in] text_len - number of lines.
  */
-void Sort(void* text1, size_t text_len, int (*CompFunc)(const void* s1, const void* s2));
+void bubble_Sort(void* text1, size_t text_len, int (*CompFunc)(const void* s1, const void* s2));
 
 
 /*!
@@ -84,18 +97,58 @@ void Output(FILE* file1, String* text, int count_n);
  * Function outputs source text.
  * \param[in] BufSize - size of buffer.
  */
-void Output1(FILE* file1, char* Buf, size_t BufSize);
+void OutputSourceFile(FILE* file1, char* Buf, size_t BufSize);
 
 
+/*!
+ * The function replaces the newline character with a null character.
+ * \param[in] BufSize - size of buffer.
+ */
 void SwapStrings(String* a, String* b);
 
 
+/*!
+ * \brief Sorting strings.
+ *
+ * The function, depending on the passed CompFunc function, sorts the strings either from the beginning or from the end.
+ * \param[in] text_len - number of lines.
+ */
 void qSort(void* text1, size_t left, size_t right, int (*CompFunc)(const void* s1, const void* s2));
 
 
+/*!
+ * The function replaces the newline character with a null character.
+ * \param[in] BufSize - size of buffer.
+ */
 bool is_valid(char symbol);
 
+
+/*!
+ * The function replaces the newline character with a null character.
+ * \param[in] BufSize - size of buffer.
+ */
 int find_valid(const String* str, int start, int delta);
+
+
+/*!
+ * The function replaces the newline character with a null character.
+ * \param[in] BufSize - size of buffer.
+ */
 void OutputToCmd(String* text, int count_n);
+
+
+/*!
+ * The function replaces the newline character with a null character.
+ * \param[in] BufSize - size of buffer.
+ */
+void File_input(FILE* file, Text* data);
+
+
+/*!
+ * The function replaces the newline character with a null character.
+ * \param[in] BufSize - size of buffer.
+ */
+void Free(Text* data);
+
 
 
